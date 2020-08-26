@@ -11,10 +11,6 @@ body {
   background: gray;
 }
 
-/* .CommonButton {
-  background: greenyellow;
-} */
-
 .table-row {
   display: table;
   width: 100%;
@@ -26,48 +22,19 @@ body {
   width: 20%;
 }
 
-ol, ul {
-  padding-left: 30px;
+#modal-root {
+  position: relative;
+  z-index: 999;
 }
 
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
-}
-
-.status {
-  margin-bottom: 10px;
-}
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-}
-
-.square:focus {
-  outline: none;
-}
-
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-
-.game {
+.childModal {
+  background-color: rgba(0,0,0,0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
   display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
+  align-items: center;
+  justify-content: center;
 }
