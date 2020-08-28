@@ -3,9 +3,9 @@ import './ModalArea.css';
 
 class ModalArea extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return (

@@ -6,23 +6,127 @@ import './bootstrap/dist/css/bootstrap.min.css'
 
 const appRoot = document.getElementById('app-root');
 const modalRoot = document.getElementById('modal-root');
+const listArea = document.getElementById('listArea');
+
+class ItemList extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {}
+
+    this.showDetail = this.showDetail.bind(this);
+    this.hideDetail = this.hideDetail.bind(this);
+
+  }
+
+  showDetail(videoId) {
+    // this.setState({showModal: true, videoId: videoId});
+    this.state.videoId = videoId;
+    this.state.showModal = true;
+    // console.log(this.state.videoId);
+    // console.log(this.state.showModal);
+    console.log(this.state);
+  }
+
+  hideDetail() {
+    // this.setState({showModal: false, videoId: ""});
+    this.state.videoId = "";
+    this.state.showModal = false;
+  }
+
+  render() {
+
+    var i = 0
+
+    console.log("hello");
+    const modal = this.state.showModal ? (
+      <Modal>
+        <div className="childModal">
+          <ModalArea />
+          <button className="btn btn-default" data-dismiss="modal" onClick={this.hideDetail}><span aria-hidden="true">&times;</span></button>
+        </div>
+      </Modal>
+    ) : null;
+    console.log(modal);
+
+    return (
+      <div className="table-row">
+        {this.props.items.map((item) => (
+          <div key={i++}>
+            <div className="table-cell">{i}</div>
+            <div className="table-cell">{item.snippet.title}</div>
+            <div className="table-cell">{item.snippet.channelTitle}</div>
+            <div className="table-cell">{item.snippet.publishTime}</div>
+            <div className="table-cell"><button className="btn btn-info" onClick={() => this.showDetail(item.id.videoId)}>再生</button></div>
+          </div>
+        ))}
+        {modal}
+      </div>
+    )
+  }
+}
 
 class HeaderArea extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {value: '艦これ'};
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  searchVideo() {
+
+    console.log(this.state.value);
+
+    if(this.state.value !== "") {
+      fetch("https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&key=AIzaSyCWz28BO2Zl2OZ7r3mrDqvu_bvWMcVhvIU&q=" + this.state.value)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              items: result.items
+            });
+            this.generateResultList();
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        )
+    }
+  }
+
+  generateResultList() {
+
+    if(this.state.items.length <= 0) {
+      console.log("取得結果0件");
+      return;
+    }
+    ReactDOM.render(<ItemList items={this.state.items} />, document.getElementById('listArea'));
+  }
+
   render() {
     const title = getTitleName();
     return (
       <div>
         {title}
-        <button className="btn btn-primary">追加</button>
-        <button className="btn btn-primary">Cond値</button>
-        <button className="btn btn-primary">パラメータ保存</button>
+        <input type="text" className="form-control" placeholder="検索ワード" value={this.state.value} onChange={this.handleChange}></input>
+        <button className="btn btn-primary" onClick={() => this.searchVideo()}>検索</button>
       </div>
     );
   }
 }
 
 function getTitleName() {
-  const title = 'ステータスチェッカー';
+  const title = 'YouTube Viewer';
   return title;
 }
 
@@ -41,6 +145,7 @@ class Modal extends React.Component {
   }
 
   render() {
+    console.log("Modal");
     return ReactDOM.createPortal(
       this.props.children,
       this.el
@@ -50,38 +155,26 @@ class Modal extends React.Component {
 
 class StatusList extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {showModal: false};
-
-    this.showDetail = this.showDetail.bind(this);
-    this.hideDetail = this.hideDetail.bind(this);
-  }
-
-  showDetail(i) {
-    this.setState({showModal: true});
-  }
-
-  hideDetail(i) {
-    this.setState({showModal: false});
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
 
-    const modal = this.state.showModal ? (
-      <Modal>
-        <div className="childModal">
-          <ModalArea />
-          <button class="btn btn-default" data-dismiss="modal" onClick={this.hideDetail}><span aria-hidden="true">&times;</span></button>
-        </div>
-      </Modal>
-    ) : null;
+    // const modal = this.state.showModal ? (
+    //   <Modal>
+    //     <div className="childModal">
+    //       <ModalArea />
+    //       <button className="btn btn-default" data-dismiss="modal" onClick={this.hideDetail}><span aria-hidden="true">&times;</span></button>
+    //     </div>
+    //   </Modal>
+    // ) : null;
 
     return (
       <div>
         <header className="HeaderArea"><HeaderArea /></header>
-        <div className="listArea">
-          <div className="table-row">
+        <div id="listArea">
+          {/* <div className="table-row">
             <div className="table-cell"></div>
             <div className="table-cell">item1</div>
             <div className="table-cell">item2</div>
@@ -102,7 +195,7 @@ class StatusList extends React.Component {
             <div className="table-cell">data2-3</div>
             <div className="table-cell"><button className="btn btn-info" onClick={() => this.showDetail(2)}>詳細</button></div>
           </div>
-          {modal}
+          {modal} */}
         </div>
         <footer className="FooterArea"><FooterArea /></footer>
       </div>
