@@ -6,7 +6,6 @@ import './bootstrap/dist/css/bootstrap.min.css'
 
 const appRoot = document.getElementById('app-root');
 const modalRoot = document.getElementById('modal-root');
-const listArea = document.getElementById('listArea');
 
 class ItemList extends React.Component {
 
@@ -20,25 +19,20 @@ class ItemList extends React.Component {
   }
 
   showDetail(videoId) {
-    // this.setState({showModal: true, videoId: videoId});
-    this.state.videoId = videoId;
-    this.state.showModal = true;
-    // console.log(this.state.videoId);
-    // console.log(this.state.showModal);
+    this.setState({showModal: true, videoId: videoId});
     console.log(this.state);
   }
 
   hideDetail() {
-    // this.setState({showModal: false, videoId: ""});
-    this.state.videoId = "";
-    this.state.showModal = false;
+    this.setState({showModal: false, videoId: ""});
+    console.log(this.state);
   }
 
   render() {
 
     var i = 0
 
-    console.log("hello");
+    console.log("hello: " + this.state.showModal);
     const modal = this.state.showModal ? (
       <Modal>
         <div className="childModal">
@@ -155,8 +149,27 @@ class Modal extends React.Component {
 
 class StatusList extends React.Component {
 
-  // constructor(props) {
-  //   super(props);
+  constructor(props) {
+    super(props);
+    // this.state = {}
+
+    // this.showDetail = this.showDetail.bind(this);
+    // this.hideDetail = this.hideDetail.bind(this);
+  }
+
+  // showDetail(videoId) {
+  //   this.setState({showModal: true, videoId: videoId});
+  //   this.state.videoId = videoId;
+  //   this.state.showModal = true;
+  //   // console.log(this.state.videoId);
+  //   // console.log(this.state.showModal);
+  //   console.log(this.state);
+  // }
+
+  // hideDetail() {
+  //   this.setState({showModal: false, videoId: ""});
+  //   // this.state.videoId = "";
+  //   // this.state.showModal = false;
   // }
 
   render() {
@@ -169,12 +182,13 @@ class StatusList extends React.Component {
     //     </div>
     //   </Modal>
     // ) : null;
+    // console.log(modal);
 
     return (
       <div>
         <header className="HeaderArea"><HeaderArea /></header>
-        <div id="listArea">
-          {/* <div className="table-row">
+        {/* <div id="listArea">
+          <div className="table-row">
             <div className="table-cell"></div>
             <div className="table-cell">item1</div>
             <div className="table-cell">item2</div>
@@ -195,8 +209,9 @@ class StatusList extends React.Component {
             <div className="table-cell">data2-3</div>
             <div className="table-cell"><button className="btn btn-info" onClick={() => this.showDetail(2)}>詳細</button></div>
           </div>
-          {modal} */}
-        </div>
+          {modal}
+        </div> */}
+        <div id="listArea"></div>
         <footer className="FooterArea"><FooterArea /></footer>
       </div>
     )
