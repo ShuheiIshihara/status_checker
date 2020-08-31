@@ -64,7 +64,7 @@ class HeaderArea extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {value: '艦これ'};
+    this.state = {value: '', jsonData: require("./data/common.json")};
 
     this.handleChange = this.handleChange.bind(this);
   }
@@ -75,10 +75,8 @@ class HeaderArea extends React.Component {
 
   searchVideo() {
 
-    console.log(this.state.value);
-
-    if(this.state.value !== "") {
-      fetch("https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&key=AIzaSyCWz28BO2Zl2OZ7r3mrDqvu_bvWMcVhvIU&q=" + this.state.value)
+    if(this.state.value !== "" && this.state.jsonData !== null) {
+      fetch("https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&key=" + this.state.jsonData.api_key + "&q=" + this.state.value)
         .then(res => res.json())
         .then(
           (result) => {
@@ -120,7 +118,10 @@ class HeaderArea extends React.Component {
 }
 
 function getTitleName() {
-  const title = 'YouTube Viewer';
+  var title = "";
+  if (this.state.jsonData !== null) {
+    title = this.state.jsonData.title;
+  }
   return title;
 }
 
